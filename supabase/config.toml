@@ -1,0 +1,2 @@
+[functions.payhero-callback]
+verify_jwt = false

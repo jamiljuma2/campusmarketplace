@@ -1,0 +1,3 @@
+"use server";import {revalidatePath} from "next/cache";import {redirect} from "next/navigation";import {createClient} from "@/lib/supabase/server";
+export async function signOut(){try{const db=await createClient();await db.auth.signOut()}finally{redirect("/")}}
+export async function markSold(form:FormData){const id=String(form.get("id")||"");const db=await createClient();const {data:{user}}=await db.auth.getUser();if(!user)redirect("/login?next=/account");const {error}=await db.from("products").update({status:"sold"}).eq("id",id).eq("seller_id",user.id);if(error)redirect("/account?error=Could+not+update+listing");revalidatePath("/account");redirect("/account?success=Listing+marked+as+sold")}

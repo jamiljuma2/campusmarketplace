@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 170" role="img" aria-labelledby="title">
+  <title id="title">CampusMarket KE — Buy, Sell, Connect</title>
+  <g transform="translate(2 5)">
+    <path d="M26 62h115l14 71c2 11-5 19-17 19H29c-12 0-19-8-17-19l14-71Z" fill="#08245d"/>
+    <path d="M52 63V37a32 32 0 0 1 64 0v26" fill="none" stroke="#08245d" stroke-width="10" stroke-linecap="round"/>
+    <path d="m35 82 49-20 49 20-49 20-49-20Z" fill="#fff9cf"/>
+    <path d="M55 91v19c18 13 40 13 58 0V91L84 103 55 91Z" fill="#79c456"/>
+    <path d="M132 84v27" stroke="#f36b12" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="132" cy="115" r="5" fill="#f36b12"/>
+    <path d="M8 151c35 14 91 5 153-20" fill="none" stroke="#f36b12" stroke-width="9" stroke-linecap="round"/>
+    <path d="m148 123 17 8-15 12" fill="none" stroke="#f36b12" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="184" y="91" fill="#08245d" font-family="Arial,Helvetica,sans-serif" font-size="76" font-weight="800" letter-spacing="-3">Campus</text>
+  <text x="466" y="91" fill="#f36b12" font-family="Arial,Helvetica,sans-serif" font-size="76" font-weight="800" letter-spacing="-3">Market</text>
+  <rect x="752" y="35" width="130" height="64" rx="18" fill="#148b2c"/>
+  <text x="817" y="83" fill="#ffffff" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="43" font-style="italic" font-weight="800">KE</text>
+  <path d="M184 133h140m350 0h208" stroke="#08245d" stroke-width="4" stroke-linecap="round"/>
+  <text x="460" y="143" fill="#08245d" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" letter-spacing="2">Buy <tspan fill="#f36b12">•</tspan> Sell <tspan fill="#f36b12">•</tspan> Connect</text>
+</svg>
