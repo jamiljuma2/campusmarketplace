@@ -39,6 +39,10 @@ header nav a{font-weight:500}
   .dashboard-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .marketplace-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .home-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .home-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+  .home-category-grid .category-card { min-height: 72px; padding: 10px !important; gap: 8px !important; }
+  .home-category-grid .category-card > span:first-child { width: 32px !important; height: 32px !important; flex: 0 0 32px; }
+  .home-category-grid .category-card > span:last-child { font-size: 11px !important; line-height: 1.25; }
   .form-two-column, .billing-options-grid { grid-template-columns: minmax(0, 1fr) !important; }
   .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .conversation-send-form .field { min-width: 0; flex: 1; }
@@ -46,6 +50,8 @@ header nav a{font-weight:500}
   .conversation-thread-messages { height: min(420px, 55dvh) !important; }
 }
 @media (max-width: 520px) {
+  .home-category-grid { gap: 7px !important; }
+  .home-category-grid .category-card { min-height: 64px; }
   .account-heading { align-items: stretch !important; flex-direction: column; }
   .seller-listing-row, .admin-queue-row { align-items: stretch !important; flex-direction: column; }
   .seller-listing-info, .admin-queue-item-main { min-width: 0; overflow-wrap: anywhere; }
