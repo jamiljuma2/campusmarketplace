@@ -20,7 +20,7 @@ header nav a{font-weight:500}
 @media(max-width:460px){.brand-logo{width:150px}}
 .home-hero{position:relative;min-height:500px;overflow:hidden;background:#f3f7ef}
 .hero-background{position:absolute;inset:0;z-index:0;overflow:hidden}
-.hero-background-slide{position:absolute;inset:0;background-position:center;background-size:cover;opacity:0;animation:hero-background-fade 36s linear infinite}
+.hero-background-slide{position:absolute;inset:0;background-position:center;background-size:cover;opacity:1}
 .home-hero::after{position:absolute;inset:0;z-index:1;content:"";pointer-events:none;background:linear-gradient(90deg,rgba(250,251,248,.94) 0%,rgba(250,251,248,.82) 32%,rgba(250,251,248,.4) 56%,rgba(250,251,248,.08) 100%)}
 .home-hero-content{position:relative;z-index:2;display:flex;min-height:500px;align-items:center;padding-block:64px}
 .home-hero-copy{width:min(100%,650px)}
