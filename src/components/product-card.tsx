@@ -21,6 +21,11 @@ export function ProductCard({product}:{product:Product}) {
           <div className="muted" style={{ fontSize:12, display:"flex", alignItems:"center", gap:4, marginTop:9 }}><MapPin size={13}/>{product.town || "Kenya"}</div>
         </div>
       </Link>
+      <div style={{ padding:"0 14px 14px" }}>
+        <Link href={`/product/${product.id}`} className="btn btn-secondary" style={{ width:"100%", marginTop:9 }}>
+          I&apos;m interested
+        </Link>
+      </div>
     </div>
   );
 }
