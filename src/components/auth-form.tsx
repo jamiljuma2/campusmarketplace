@@ -28,12 +28,16 @@ export function AuthForm({
       let error;
 
       if (mode === "register") {
+        const signupIntent = String(form.get("signup_intent") || "future_seller");
         const result = await supabase.auth.signUp({
           email,
           password,
           options: {
             emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
-            data: { full_name: String(form.get("name")) },
+            data: {
+              full_name: String(form.get("name")),
+              signup_intent: signupIntent,
+            },
           },
         });
         error = result.error;
@@ -84,6 +88,21 @@ export function AuthForm({
           Your name
           <input required name="name" className="field" style={{ marginTop: 6 }} placeholder="e.g. Amina Wanjiku" />
         </label>
+      )}
+      {mode === "register" && (
+        <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
+          <legend style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>How will you use CampusMarket?</legend>
+          <div style={{ display: "grid", gap: 8 }}>
+            <label className="signup-option">
+              <input required type="radio" name="signup_intent" value="seller" defaultChecked={nextPath === "/sell"} />
+              <span><strong>I want to sell</strong><small>Post items and manage my listings.</small></span>
+            </label>
+            <label className="signup-option">
+              <input required type="radio" name="signup_intent" value="future_seller" defaultChecked={nextPath !== "/sell"} />
+              <span><strong>I want to browse and buy</strong><small>I may sell something in the future, and can start anytime.</small></span>
+            </label>
+          </div>
+        </fieldset>
       )}
       {mode !== "update" && (
         <label style={{ fontSize: 13, fontWeight: 700 }}>
