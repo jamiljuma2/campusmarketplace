@@ -78,7 +78,7 @@ header nav a{font-weight:500}
 
 /* Admin dashboard */
 .admin-shell{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:calc(100vh - 70px);background:#f7f8f6}
-.admin-sidebar{background:#fff;border-right:1px solid var(--line);padding:26px 15px;display:flex;flex-direction:column;gap:26px}
+.admin-sidebar{background:#fff;border-right:1px solid var(--line);padding:26px 15px;display:flex;flex-direction:column;gap:26px;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .admin-drawer-header{display:contents}.admin-drawer-close,.admin-menu-button,.admin-drawer-backdrop{display:none}
 .admin-brand{display:flex;align-items:center;gap:9px;color:var(--green);font-size:17px;font-weight:800;padding:0 12px}
 .admin-sidebar-label{color:#a0a9a0;text-transform:uppercase;letter-spacing:.08em;font-size:10px;font-weight:800;padding:0 13px -3px}
