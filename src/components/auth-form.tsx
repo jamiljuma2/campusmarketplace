@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 export function AuthForm({
   mode,
-  nextPath = "/account",
+  nextPath = "/marketplace",
 }: {
   mode: "login" | "register" | "reset" | "update";
   nextPath?: string;
@@ -43,7 +43,9 @@ export function AuthForm({
         error = result.error;
         if (!error) {
           if (result.data.session) router.push(nextPath);
-          else setMessage("Check your email to confirm your account. You’ll return to posting your item after confirmation.");
+          else setMessage(nextPath === "/sell"
+            ? "Check your email to confirm your account. You’ll return to posting your item after confirmation."
+            : "Check your email to confirm your account. You’ll return to browsing after confirmation.");
         }
       } else if (mode === "login") {
         const result = await supabase.auth.signInWithPassword({ email, password });
