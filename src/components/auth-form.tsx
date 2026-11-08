@@ -31,11 +31,12 @@ export function AuthForm({
 
       if (mode === "register") {
         const signupIntent = String(form.get("signup_intent") || "future_seller");
+        const signupDestination = signupIntent === "seller" ? "/account" : nextPath;
         const result = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+            emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(signupDestination)}`,
             data: {
               full_name: String(form.get("name")),
               signup_intent: signupIntent,
@@ -44,9 +45,9 @@ export function AuthForm({
         });
         error = result.error;
         if (!error) {
-          if (result.data.session) router.push(nextPath);
-          else setMessage(nextPath === "/sell"
-            ? "Check your email to confirm your account. You’ll return to posting your item after confirmation."
+          if (result.data.session) router.push(signupDestination);
+          else setMessage(signupDestination === "/account"
+            ? "Check your email to confirm your account. You’ll go to your seller dashboard after confirmation."
             : "Check your email to confirm your account. You’ll return to browsing after confirmation.");
         }
       } else if (mode === "login") {
@@ -59,11 +60,21 @@ export function AuthForm({
           }
           const { data: profile, error: profileError } = await supabase
             .from("profiles")
-            .select("role")
+            .select("role,signup_intent")
             .eq("id", result.data.user.id)
             .maybeSingle();
           if (profileError) throw profileError;
-          router.push(profile?.role === "admin" ? "/admin" : nextPath === "/admin" ? "/account" : nextPath);
+          if (profile?.role === "admin") {
+            router.push("/admin");
+          } else {
+            const { count, error: listingError } = await supabase
+              .from("products")
+              .select("id", { count: "exact", head: true })
+              .eq("seller_id", result.data.user.id);
+            if (listingError) throw listingError;
+            const isSeller = profile?.signup_intent === "seller" || (count ?? 0) > 0;
+            router.push(isSeller ? "/account" : nextPath === "/admin" ? "/marketplace" : nextPath);
+          }
         }
       } else if (mode === "update") {
         const result = await supabase.auth.updateUser({ password });
