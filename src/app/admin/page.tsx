@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BarChart3, Bell, CheckCircle2, ChevronRight, CircleDollarSign, ClipboardList, ListChecks, Users } from "lucide-react";
+import { BarChart3, Bell, CheckCircle2, ChevronRight, CircleDollarSign, ClipboardList, ListChecks, Settings, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSupabase } from "@/lib/env";
@@ -21,13 +21,15 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
   if (profile?.role !== "admin") redirect("/");
 
   const admin = createAdminClient();
-  const [{ count: users }, { count: products }, { count: active }, { count: pending }, { count: subscriptions }, { data: payments }, queueResult] = await Promise.all([
+  const [{ count: users }, { count: products }, { count: active }, { count: pending }, { count: subscriptions }, { data: payments }, { data: recentUsers }, { data: moderationSetting }, queueResult] = await Promise.all([
     admin.from("profiles").select("id", { count: "exact", head: true }),
     admin.from("products").select("id", { count: "exact", head: true }),
     admin.from("products").select("id", { count: "exact", head: true }).eq("status", "active"),
     admin.from("products").select("id", { count: "exact", head: true }).eq("status", "pending_review"),
     admin.from("seller_subscriptions").select("id", { count: "exact", head: true }).eq("status", "active").gt("expires_at", new Date().toISOString()),
     admin.from("payments").select("amount_kes,status,kind,created_at,internal_reference").order("created_at", { ascending: false }).limit(100),
+    admin.from("profiles").select("id,full_name,username,role,is_verified,is_suspended,created_at").order("created_at", { ascending: false }).limit(8),
+    admin.from("platform_settings").select("value").eq("key", "moderation").maybeSingle(),
     admin.from("products").select("id,title,price,created_at,seller_id").eq("status", "pending_review").order("created_at").limit(30),
   ]);
 
@@ -39,6 +41,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
     ? await admin.from("profiles").select("id,full_name,username").in("id", sellerIds)
     : { data: [], error: null };
   const sellerById = new Map((sellers || []).map((seller) => [seller.id, seller]));
+  const moderation = (moderationSetting?.value || {}) as { auto_publish?: boolean; max_images?: number; max_image_mb?: number };
   const { error, success } = await searchParams;
   const stats = [
     { label: "Total users", value: users || 0, icon: Users, tone: "admin-stat-green" },
@@ -89,8 +92,24 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
         </section>
 
         <section className="admin-panel" id="payments">
-          <div className="admin-panel-heading"><div><h2>Recent payment records</h2><p className="muted">Latest successful and pending transactions</p></div><Link href="#payments" className="muted">View all <ChevronRight size={15} /></Link></div>
+          <div className="admin-panel-heading"><div><h2>Recent payment records</h2><p className="muted">Latest successful and pending transactions</p></div><span className="muted">Showing latest {payments?.length || 0}</span></div>
           <div className="admin-payment-list">{payments?.slice(0, 8).map((payment, index) => <div className="admin-payment-row" key={index}><div className="admin-payment-icon"><CircleDollarSign size={16} /></div><div><strong>{payment.kind}</strong><span>{payment.internal_reference} · {dateLabel(payment.created_at)}</span></div><span className={`admin-payment-status status-${payment.status}`}>{payment.status}</span><strong>{kes(Number(payment.amount_kes))}</strong></div>)}</div>
+        </section>
+
+        <section className="admin-panel" id="users">
+          <div className="admin-panel-heading"><div><h2>Users</h2><p className="muted">Recently registered platform accounts</p></div><span className="admin-count-pill">{users || 0} total</span></div>
+          <div className="admin-user-list">
+            {recentUsers?.map((account) => <div className="admin-user-row" key={account.id}><div className="admin-avatar">{(account.full_name || account.username || "U").slice(0, 1).toUpperCase()}</div><div><strong>{account.full_name || account.username || "Unnamed user"}</strong><span>@{account.username || "no-username"} · Joined {dateLabel(account.created_at)}</span></div><span className={account.is_suspended ? "status-cancelled" : account.is_verified ? "status-successful" : "status-pending"}>{account.is_suspended ? "Suspended" : account.is_verified ? "Verified" : "Unverified"}</span></div>)}
+          </div>
+        </section>
+
+        <section className="admin-panel" id="settings">
+          <div className="admin-panel-heading"><div><h2>Settings</h2><p className="muted">Current marketplace moderation controls</p></div><Settings size={19} className="muted" /></div>
+          <div className="admin-settings-grid">
+            <div><span>Listing publication</span><strong>{moderation.auto_publish ? "Automatic" : "Admin review required"}</strong></div>
+            <div><span>Maximum images per listing</span><strong>{moderation.max_images ?? "Not configured"}</strong></div>
+            <div><span>Maximum image size</span><strong>{moderation.max_image_mb ? `${moderation.max_image_mb} MB` : "Not configured"}</strong></div>
+          </div>
         </section>
       </main>
     </div>
