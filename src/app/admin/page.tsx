@@ -34,12 +34,17 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
     admin.from("products").select("id", { count: "exact", head: true }).eq("status", "pending_review"),
     admin.from("seller_subscriptions").select("id", { count: "exact", head: true }).eq("status", "active").gt("expires_at", new Date().toISOString()),
     admin.from("payments").select("amount_kes,status,kind,created_at,internal_reference").order("created_at", { ascending: false }).limit(100),
-    admin.from("products").select("id,title,price,created_at,profiles(full_name,username)").eq("status", "pending_review").order("created_at").limit(30),
+    admin.from("products").select("id,title,price,created_at,seller_id").eq("status", "pending_review").order("created_at").limit(30),
   ]);
 
   const confirmed = (payments || []).filter((payment) => payment.status === "successful");
   const revenue = confirmed.reduce((total, payment) => total + Number(payment.amount_kes), 0);
   const { data: queue, error: queueError } = queueResult;
+  const sellerIds = [...new Set((queue || []).map((product) => product.seller_id))];
+  const { data: sellers, error: sellersError } = sellerIds.length
+    ? await admin.from("profiles").select("id,full_name,username").in("id", sellerIds)
+    : { data: [], error: null };
+  const sellerById = new Map((sellers || []).map((seller) => [seller.id, seller]));
   const { error, success } = await searchParams;
 
   return (
@@ -62,7 +67,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
       </div>
       <h2 style={{ fontSize: 19, marginTop: 32 }}>Listings awaiting review</h2>
       <div className="card" style={{ padding: "4px 18px" }}>
-        {queueError ? (
+        {queueError || sellersError ? (
           <p role="alert" style={{ color: "#963a35", fontSize: 13 }}>Review queue could not be loaded. Please refresh and try again.</p>
         ) : queue?.length ? (
           queue.map((product) => (
@@ -70,7 +75,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
               <div className="admin-queue-item-main">
                 <Link href={`/product/${product.id}`} style={{ fontWeight: 700 }}>{product.title}</Link>
                 <div className="muted" style={{ fontSize: 12, marginTop: 5 }}>
-                  {kes(Number(product.price))} · {dateLabel(product.created_at)} · {(product.profiles as unknown as { full_name: string | null; username: string | null }[] | null)?.[0]?.full_name || "Seller"}
+                  {kes(Number(product.price))} · {dateLabel(product.created_at)} · {sellerById.get(product.seller_id)?.full_name || sellerById.get(product.seller_id)?.username || "Seller"}
                 </div>
               </div>
               <div className="admin-queue-actions" style={{ display: "flex", gap: 8 }}>
