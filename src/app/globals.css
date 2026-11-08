@@ -134,3 +134,24 @@ header nav a:hover, .footer-links a:hover { color: var(--green-light); }
   .hero-background-slide { animation: none !important; opacity: 0 !important; }
   .hero-background-slide:first-child { opacity: 1 !important; }
 }
+
+.password-field-wrap { position: relative; }
+.password-visibility-toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+.password-visibility-toggle:hover { background: var(--cream); color: var(--green); }
+.password-visibility-toggle:focus-visible { outline: 2px solid var(--green); outline-offset: 1px; }

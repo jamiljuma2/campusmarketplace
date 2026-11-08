@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export function AuthForm({
@@ -14,6 +15,7 @@ export function AuthForm({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -115,7 +117,27 @@ export function AuthForm({
       {mode !== "reset" && (
         <label style={{ fontSize: 13, fontWeight: 700 }}>
           {mode === "update" ? "New password" : "Password"}
-          <input required name="password" type="password" minLength={8} className="field" style={{ marginTop: 6 }} placeholder="At least 8 characters" />
+          <span className="password-field-wrap" style={{ display: "block", marginTop: 6 }}>
+            <input
+              required
+              name="password"
+              type={showPassword ? "text" : "password"}
+              minLength={8}
+              className="field"
+              style={{ paddingRight: 48 }}
+              placeholder="At least 8 characters"
+              autoComplete={mode === "update" ? "new-password" : mode === "register" ? "new-password" : "current-password"}
+            />
+            <button
+              type="button"
+              className="password-visibility-toggle"
+              onClick={() => setShowPassword((visible) => !visible)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </span>
         </label>
       )}
       <button className="btn btn-primary" disabled={loading}>
