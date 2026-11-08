@@ -3,9 +3,9 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { kes } from "@/lib/format";
 
-export type Product = { id:string; title:string; slug:string; price:number; condition:string; town:string|null; created_at:string; product_images?:{storage_path:string;alt_text:string|null}[]; categories?:{name:string}|{name:string}[]|null };
+export type Product = { id:string; seller_id?:string; title:string; slug:string; price:number; condition:string; town:string|null; created_at:string; product_images?:{storage_path:string;alt_text:string|null}[]; categories?:{name:string}|{name:string}[]|null };
 
-export function ProductCard({product}:{product:Product}) {
+export function ProductCard({product,viewerId=null}:{product:Product;viewerId?:string|null}) {
   const img = product.product_images?.[0]?.storage_path;
 
   return (
@@ -21,11 +21,11 @@ export function ProductCard({product}:{product:Product}) {
           <div className="muted" style={{ fontSize:12, display:"flex", alignItems:"center", gap:4, marginTop:9 }}><MapPin size={13}/>{product.town || "Kenya"}</div>
         </div>
       </Link>
-      <div style={{ padding:"0 14px 14px" }}>
+      {viewerId !== product.seller_id && <div style={{ padding:"0 14px 14px" }}>
         <Link href={`/product/${product.id}`} className="btn btn-secondary" style={{ width:"100%", marginTop:9 }}>
           I&apos;m interested
         </Link>
-      </div>
+      </div>}
     </div>
   );
 }
