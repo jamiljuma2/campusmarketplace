@@ -1,3 +1,5 @@
+/// <reference path="../deno.d.ts" />
+
 type CallbackResponse = {
   Amount?: number | string;
   ExternalReference?: string;
