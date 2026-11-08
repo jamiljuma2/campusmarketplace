@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BarChart3, Bell, CheckCircle2, ChevronRight, CircleDollarSign, ClipboardList, LayoutDashboard, ListChecks, Settings, ShieldCheck, Users } from "lucide-react";
+import { BarChart3, Bell, CheckCircle2, ChevronRight, CircleDollarSign, ClipboardList, ListChecks, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSupabase } from "@/lib/env";
 import { kes, dateLabel } from "@/lib/format";
 import { moderateProduct } from "./actions";
+import { AdminSidebar } from "@/components/admin-sidebar";
 
 export const dynamic = "force-dynamic";
 
@@ -48,25 +49,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
 
   return (
     <div className="admin-shell">
-      <aside className="admin-sidebar">
-        <Link href="/admin" className="admin-brand"><ShieldCheck size={22} /> CampusMarket</Link>
-        <div className="admin-sidebar-label">Workspace</div>
-        <nav className="admin-sidebar-nav">
-          <a className="active" href="#overview"><LayoutDashboard size={17} /> Dashboard</a>
-          <a href="#review-queue"><ListChecks size={17} /> Listings <span>{pending || 0}</span></a>
-          <a href="#payments"><CircleDollarSign size={17} /> Payments</a>
-          <a href="#users"><Users size={17} /> Users <span>{users || 0}</span></a>
-          <a href="#analytics"><BarChart3 size={17} /> Analytics</a>
-        </nav>
-        <div className="admin-sidebar-label">System</div>
-        <nav className="admin-sidebar-nav">
-          <a href="#settings"><Settings size={17} /> Settings</a>
-        </nav>
-        <div className="admin-sidebar-footer">
-          <div className="admin-avatar">{(profile.full_name || profile.username || "A").slice(0, 1).toUpperCase()}</div>
-          <div><strong>{profile.full_name || profile.username || "Administrator"}</strong><span>Administrator</span></div>
-        </div>
-      </aside>
+      <AdminSidebar fullName={profile.full_name} username={profile.username} pending={pending || 0} users={users || 0} />
 
       <main className="admin-main" id="overview">
         <div className="admin-topbar">
