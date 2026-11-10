@@ -28,7 +28,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
     admin.from("products").select("id", { count: "exact", head: true }).eq("status", "pending_review"),
     admin.from("seller_subscriptions").select("id", { count: "exact", head: true }).eq("status", "active").gt("expires_at", new Date().toISOString()),
     admin.from("payments").select("amount_kes,status,kind,created_at,internal_reference").order("created_at", { ascending: false }).limit(100),
-    admin.from("profiles").select("id,full_name,username,role,is_verified,is_suspended,created_at").order("created_at", { ascending: false }).limit(8),
+    admin.from("profiles").select("id,full_name,username,role,is_suspended,created_at").order("created_at", { ascending: false }).limit(8),
     admin.from("platform_settings").select("value").eq("key", "moderation").maybeSingle(),
     admin.from("products").select("id,title,price,created_at,seller_id").eq("status", "pending_review").order("created_at").limit(30),
   ]);
@@ -41,6 +41,10 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
     ? await admin.from("profiles").select("id,full_name,username").in("id", sellerIds)
     : { data: [], error: null };
   const sellerById = new Map((sellers || []).map((seller) => [seller.id, seller]));
+  const emailConfirmationByUserId = new Map(await Promise.all((recentUsers || []).map(async (account) => {
+    const { data, error } = await admin.auth.admin.getUserById(account.id);
+    return [account.id, error ? null : Boolean(data.user?.email_confirmed_at)] as const;
+  })));
   const moderation = (moderationSetting?.value || {}) as { auto_publish?: boolean; max_images?: number; max_image_mb?: number };
   const { error, success } = await searchParams;
   const stats = [
@@ -102,7 +106,10 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
         <section className="admin-panel" id="users">
           <div className="admin-panel-heading"><div><h2>Users</h2><p className="muted">Recently registered platform accounts</p></div><span className="admin-count-pill">{users || 0} total</span></div>
           <div className="admin-user-list">
-            {recentUsers?.map((account) => <div className="admin-user-row" key={account.id}><div className="admin-avatar">{(account.full_name || account.username || "U").slice(0, 1).toUpperCase()}</div><div><strong>{account.full_name || account.username || "Unnamed user"}</strong><span>@{account.username || "no-username"} · Joined {dateLabel(account.created_at)}</span></div><span className={account.is_suspended ? "status-cancelled" : account.is_verified ? "status-successful" : "status-pending"}>{account.is_suspended ? "Suspended" : account.is_verified ? "Verified" : "Unverified"}</span></div>)}
+            {recentUsers?.map((account) => {
+              const emailVerified = emailConfirmationByUserId.get(account.id);
+              return <div className="admin-user-row" key={account.id}><div className="admin-avatar">{(account.full_name || account.username || "U").slice(0, 1).toUpperCase()}</div><div><strong>{account.full_name || account.username || "Unnamed user"}</strong><span>@{account.username || "no-username"} · Joined {dateLabel(account.created_at)}</span></div><span className={account.is_suspended ? "status-cancelled" : emailVerified === null ? "status-pending" : emailVerified ? "status-successful" : "status-pending"}>{account.is_suspended ? "Suspended" : emailVerified === null ? "Status unavailable" : emailVerified ? "Email verified" : "Email unverified"}</span></div>;
+            })}
           </div>
         </section>
 
