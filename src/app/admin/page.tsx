@@ -56,7 +56,10 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
 
       <main className="admin-main" id="overview">
         <div className="admin-topbar">
-          <div className="admin-search"><span>⌕</span><input aria-label="Search dashboard" placeholder="Search dashboard" /></div>
+          <form className="admin-search" action="/marketplace" role="search">
+            <span aria-hidden="true">⌕</span>
+            <input type="search" name="q" aria-label="Search marketplace listings" placeholder="Search listings" />
+          </form>
           <div className="admin-topbar-actions"><Bell size={18} /><span className="admin-online-dot" /><span className="admin-user-label">Admin account</span></div>
         </div>
 
