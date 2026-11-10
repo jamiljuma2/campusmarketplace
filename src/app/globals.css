@@ -129,6 +129,10 @@ header nav a:hover, .footer-links a:hover { color: var(--green-light); }
 .home-hero-copy { animation: cm-soft-rise 650ms cubic-bezier(.2,.7,.2,1) both; }
 @keyframes cm-soft-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 :focus-visible { outline: 3px solid rgba(40, 125, 22, .38); outline-offset: 3px; }
+.field:focus-visible,
+input[type="search"]:focus-visible,
+input[name="q"]:focus-visible,
+.admin-search input:focus-visible { outline: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .hero-background-slide { animation: none !important; opacity: 0 !important; }
