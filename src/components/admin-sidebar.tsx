@@ -22,10 +22,8 @@ export function AdminSidebar({ fullName, username, pending, users }: AdminSideba
       if (event.key === "Escape") setOpen(false);
     };
     document.addEventListener("keydown", closeOnEscape);
-    document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", closeOnEscape);
-      document.body.style.overflow = "";
     };
   }, [open]);
 
@@ -33,10 +31,9 @@ export function AdminSidebar({ fullName, username, pending, users }: AdminSideba
 
   return (
     <>
-      <button type="button" className="admin-menu-button" onClick={() => setOpen(true)} aria-label="Open admin navigation" aria-expanded={open}>
-        <Menu size={21} />
+      <button type="button" className="admin-menu-button" onClick={() => setOpen((current) => !current)} aria-label={open ? "Close admin navigation" : "Open admin navigation"} aria-expanded={open}>
+        {open ? <X size={20} /> : <Menu size={21} />}<span>{open ? "Close menu" : "Admin menu"}</span>
       </button>
-      {open && <button type="button" className="admin-drawer-backdrop" onClick={closeDrawer} aria-label="Close admin navigation" />}
       <aside className={`admin-sidebar${open ? " admin-sidebar-open" : ""}`} aria-label="Admin navigation">
         <div className="admin-drawer-header">
           <Link href="/admin" className="admin-brand" onClick={closeDrawer}><ShieldCheck size={22} /> CampusMarket</Link>

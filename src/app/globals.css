@@ -364,3 +364,27 @@ body:has(.home-hero) .site-header-search { display: none; }
   .admin-shell { position: relative; }
   .admin-menu-button { position: absolute; top: 10px; left: 14px; }
 }
+
+/* Mobile dashboard sidebars expand inline when toggled, without covering the page. */
+@media (max-width: 760px) {
+  .account-menu-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: auto; height: 40px; padding: 0 12px; margin: 0 0 10px; font-size: 12px; font-weight: 700; }
+  .account-sidebar { display: none; position: relative; inset: auto; width: 100%; height: auto; max-height: none; transform: none; visibility: visible; overflow: visible; margin-bottom: 14px; }
+  .account-sidebar.account-sidebar-open { display: flex; }
+  .account-main { padding-top: 0; }
+}
+@media (max-width: 600px) {
+  .admin-menu-button { position: relative; top: auto; left: auto; display: inline-flex; align-items: center; gap: 8px; margin: 10px 14px 4px; padding: 9px 12px; font-size: 12px; font-weight: 700; }
+  .admin-sidebar { display: none; position: relative; inset: auto; width: auto; height: auto; max-height: none; min-height: 0; transform: none; overflow: visible; margin: 0 14px 14px; padding: 16px 13px; border: 1px solid var(--line); border-radius: 13px; box-shadow: 0 4px 16px #24351d12; }
+  .admin-sidebar.admin-sidebar-open { display: flex; }
+  .admin-drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .admin-main { padding-top: 0; }
+  .admin-topbar { padding-left: 14px; }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .admin-menu-button { position: relative; top: auto; left: auto; display: inline-flex; align-items: center; gap: 8px; margin: 10px 14px 4px; padding: 9px 12px; font-size: 12px; font-weight: 700; }
+  .admin-sidebar { display: none; position: relative; inset: auto; width: auto; height: auto; max-height: none; min-height: 0; transform: none; overflow: visible; margin: 0 14px 14px; padding: 16px 13px; border: 1px solid var(--line); border-radius: 13px; box-shadow: 0 4px 16px #24351d12; }
+  .admin-sidebar.admin-sidebar-open { display: flex; }
+  .admin-drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .admin-main { padding-top: 0; }
+  .admin-topbar { padding-left: 14px; }
+}

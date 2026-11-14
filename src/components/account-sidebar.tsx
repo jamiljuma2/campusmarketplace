@@ -22,19 +22,14 @@ export function AccountSidebar() {
     if (!open) return;
     const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") setOpen(false); };
     document.addEventListener("keydown", closeOnEscape);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", closeOnEscape);
-      document.body.style.overflow = "";
-    };
+    return () => document.removeEventListener("keydown", closeOnEscape);
   }, [open]);
 
   const close = () => setOpen(false);
 
   return (
     <>
-      <button type="button" className="account-menu-button" onClick={() => setOpen(true)} aria-label="Open seller navigation" aria-expanded={open}><Menu size={20} /></button>
-      {open && <button type="button" className="account-drawer-backdrop" onClick={close} aria-label="Close seller navigation" />}
+      <button type="button" className="account-menu-button" onClick={() => setOpen(current => !current)} aria-label={open ? "Close seller navigation" : "Open seller navigation"} aria-expanded={open}>{open ? <X size={20} /> : <Menu size={20} />}<span>{open ? "Close menu" : "Seller menu"}</span></button>
       <aside className={`account-sidebar${open ? " account-sidebar-open" : ""}`} aria-label="Seller navigation">
         <div className="account-sidebar-heading">
           <span className="account-sidebar-mark"><Store size={18} /></span>
