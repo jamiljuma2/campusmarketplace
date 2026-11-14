@@ -435,3 +435,12 @@ body:has(.home-hero) .site-header-search { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .account-sidebar, .admin-sidebar { transition: none; }
 }
+
+@media (max-width: 760px) {
+  header nav > a[href="/sell"] {
+    gap: 6px !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    white-space: nowrap;
+  }
+}
