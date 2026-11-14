@@ -304,13 +304,13 @@ body:has(.home-hero) .site-header-search { display: none; }
 .account-main .account-shell { padding-top: 0; }
 @media (max-width: 760px) {
   .account-shell { grid-template-columns: minmax(0, 1fr); gap: 15px; padding-top: 14px; }
-  .account-sidebar { position: static; gap: 8px; padding: 10px; overflow: hidden; }
-  .account-sidebar-heading { display: none; }
-  .account-sidebar-nav { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
-  .account-sidebar-nav::-webkit-scrollbar { display: none; }
-  .account-sidebar-nav a { flex: 0 0 auto; padding: 9px 10px; }
-  .account-sidebar-nav a span { white-space: nowrap; }
-  .account-sidebar-trailing, .account-sidebar-cta { display: none; }
+  .account-sidebar { position: static; gap: 12px; padding: 14px; overflow: visible; }
+  .account-sidebar-heading { display: flex; }
+  .account-sidebar-nav { display: grid; gap: 4px; overflow: visible; }
+  .account-sidebar-nav a { width: 100%; padding: 10px; }
+  .account-sidebar-nav a span { white-space: normal; }
+  .account-sidebar-trailing { display: block; }
+  .account-sidebar-cta { display: inline-flex; width: 100%; }
   .account-main > .container { padding-top: 2px !important; }
 }
 
