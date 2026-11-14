@@ -18,6 +18,7 @@ type Search = {
 
 export default async function Marketplace({ searchParams }: { searchParams: Promise<Search> }) {
   const params = await searchParams;
+  const searchTerm = params.q?.trim() || "";
   const page = Math.max(1, Math.min(1000, Number(params.page) || 1));
   let products: Product[] = [];
   let message = "";
@@ -30,21 +31,33 @@ export default async function Marketplace({ searchParams }: { searchParams: Prom
       const db = await createClient();
       const { data: { user } } = await db.auth.getUser();
       viewerId = user?.id ?? null;
-      let query = db.from("products")
-        .select("id,seller_id,title,slug,price,condition,town,created_at,product_images(storage_path,alt_text),categories!inner(name)")
-        .eq("status", "active");
+      const makeQuery = () => {
+        let query = db.from("products")
+          .select("id,seller_id,title,slug,price,condition,town,created_at,product_images(storage_path,alt_text),categories!inner(name)")
+          .eq("status", "active");
+        if (params.category) query = query.eq("categories.name", params.category);
+        if (params.condition) query = query.eq("condition", params.condition);
+        if (params.min && Number.isFinite(Number(params.min))) query = query.gte("price", Number(params.min));
+        if (params.max && Number.isFinite(Number(params.max))) query = query.lte("price", Number(params.max));
+        return query.order(
+          params.sort === "low" || params.sort === "high" ? "price" : "created_at",
+          { ascending: params.sort === "low" || params.sort === "oldest" },
+        );
+      };
 
-      if (params.q) query = query.textSearch("search_document", params.q, { type: "websearch", config: "simple" });
-      if (params.category) query = query.eq("categories.name", params.category);
-      if (params.condition) query = query.eq("condition", params.condition);
-      if (params.min && Number.isFinite(Number(params.min))) query = query.gte("price", Number(params.min));
-      if (params.max && Number.isFinite(Number(params.max))) query = query.lte("price", Number(params.max));
-
-      query = query.order(
-        params.sort === "low" || params.sort === "high" ? "price" : "created_at",
-        { ascending: params.sort === "low" || params.sort === "oldest" },
-      );
-      const { data, error } = await query.range((page - 1) * 24, page * 24 - 1);
+      const from = (page - 1) * 24;
+      const to = page * 24 - 1;
+      // Prefer a complete, case-insensitive title match so an exact product name
+      // doesn't get buried among broader description or location matches.
+      const exactTitle = searchTerm
+        ? await makeQuery().ilike("title", searchTerm.replace(/[\\%_]/g, "\\$&")).range(from, to)
+        : null;
+      const result = exactTitle?.error || !exactTitle?.data?.length
+        ? await (searchTerm
+          ? makeQuery().textSearch("search_document", searchTerm, { type: "websearch", config: "simple" })
+          : makeQuery()).range(from, to)
+        : exactTitle;
+      const { data, error } = result;
       if (error) message = "Listings could not be loaded. Please try again.";
       else products = (data || []) as Product[];
     } catch {
