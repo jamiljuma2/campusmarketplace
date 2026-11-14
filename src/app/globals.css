@@ -313,3 +313,12 @@ body:has(.home-hero) .site-header-search { display: none; }
   .account-sidebar-trailing, .account-sidebar-cta { display: none; }
   .account-main > .container { padding-top: 2px !important; }
 }
+
+.edit-product-images { min-width: 0; margin: 0; padding: 0; border: 0; }
+.edit-product-images legend { margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+.edit-product-images > div { display: flex; flex-wrap: wrap; gap: 10px; }
+.edit-product-image { position: relative; width: 150px; overflow: hidden; border: 1px solid var(--line); border-radius: 9px; }
+.edit-product-image img { display: block; width: 150px; height: 110px; object-fit: cover; }
+.edit-product-image button { width: 100%; border: 0; border-top: 1px solid var(--line); padding: 7px; background: white; color: #92352f; font-size: 11px; cursor: pointer; }
+.edit-product-image.removed img { opacity: .35; }
+.edit-product-image.removed button { color: var(--green); }
