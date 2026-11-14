@@ -274,3 +274,12 @@ input[name="q"]:focus-visible,
     line-height: 22px;
   }
 }
+
+/* The landing page has a dedicated hero search, so keep the global search on other pages. */
+body:has(.home-hero) .site-header-search { display: none; }
+.home-hero-search { width: 100%; min-width: 0; }
+.home-hero-search .field { flex: 1 1 auto; min-width: 0; }
+.home-hero-search .btn { flex: 0 0 auto; }
+@media (max-width: 600px) {
+  .home-hero-search .field { font-size: 16px; }
+}
