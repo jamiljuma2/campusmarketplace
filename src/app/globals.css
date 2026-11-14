@@ -388,3 +388,50 @@ body:has(.home-hero) .site-header-search { display: none; }
   .admin-main { padding-top: 0; }
   .admin-topbar { padding-left: 14px; }
 }
+
+/* Mobile sidebar toggles open as a vertical panel from the left, below the site header. */
+@media (max-width: 760px) {
+  .account-sidebar { display: flex; position: fixed; z-index: 31; inset: 62px auto 0 0; width: min(300px, 88vw); height: auto; max-height: calc(100dvh - 62px); min-height: 0; padding: 20px 15px; overflow-y: auto; overflow-x: hidden; background: #fff; border: 1px solid var(--line); border-radius: 0 14px 14px 0; box-shadow: 8px 0 28px #24351d26; transform: translateX(-105%); visibility: hidden; transition: transform .2s ease, visibility .2s ease; }
+  .account-sidebar.account-sidebar-open { display: flex; transform: translateX(0); visibility: visible; }
+  .account-sidebar-heading { display: flex; align-items: center; }
+  .account-drawer-close { display: grid; }
+  .account-sidebar-nav { display: grid; gap: 5px; overflow: visible; }
+  .account-sidebar-nav a { width: 100%; padding: 11px 10px; }
+  .account-sidebar-nav a span { white-space: normal; }
+  .account-sidebar-trailing { display: block; }
+  .account-sidebar-cta { display: inline-flex; width: 100%; margin-top: 6px; }
+  .account-drawer-backdrop { display: block; position: fixed; z-index: 29; inset: 62px 0 0; border: 0; background: #24351d66; cursor: pointer; }
+}
+@media (max-width: 600px) {
+  .account-sidebar { top: 112px; max-height: calc(100dvh - 112px); }
+  .account-drawer-backdrop { top: 112px; }
+  .admin-menu-button { position: relative; top: auto; left: auto; display: inline-flex; align-items: center; gap: 8px; margin: 10px 14px 4px; padding: 9px 12px; font-size: 12px; font-weight: 700; }
+  .admin-sidebar { display: flex; position: fixed; z-index: 31; inset: 112px auto 0 0; width: min(300px, 88vw); height: auto; max-height: calc(100dvh - 112px); min-height: 0; transform: translateX(-105%); visibility: hidden; transition: transform .2s ease, visibility .2s ease; box-shadow: 8px 0 28px #24351d26; border: 1px solid var(--line); border-radius: 0 14px 14px 0; padding: 20px 15px; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+  .admin-sidebar.admin-sidebar-open { display: flex; transform: translateX(0); visibility: visible; }
+  .admin-drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .admin-drawer-close { display: grid; }
+  .admin-drawer-backdrop { display: block; position: fixed; z-index: 29; inset: 112px 0 0; border: 0; background: #24351d66; cursor: pointer; }
+  .admin-main { padding-top: 0; }
+  .admin-topbar { padding-left: 14px; }
+}
+@media (min-width: 601px) and (max-width: 760px) {
+  .admin-menu-button { position: relative; top: auto; left: auto; display: inline-flex; align-items: center; gap: 8px; margin: 10px 14px 4px; padding: 9px 12px; font-size: 12px; font-weight: 700; }
+  .admin-sidebar { display: flex; position: fixed; z-index: 31; inset: 62px auto 0 0; width: min(300px, 88vw); height: auto; max-height: calc(100dvh - 62px); min-height: 0; transform: translateX(-105%); visibility: hidden; transition: transform .2s ease, visibility .2s ease; box-shadow: 8px 0 28px #24351d26; border: 1px solid var(--line); border-radius: 0 14px 14px 0; padding: 20px 15px; overflow-y: auto; }
+  .admin-sidebar.admin-sidebar-open { transform: translateX(0); visibility: visible; }
+  .admin-drawer-header { display: flex; align-items: center; justify-content: space-between; }
+  .admin-drawer-close { display: grid; }
+  .admin-drawer-backdrop { display: block; position: fixed; z-index: 29; inset: 62px 0 0; border: 0; background: #24351d66; cursor: pointer; }
+  .admin-topbar { padding-left: 14px; }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .admin-menu-button { position: relative; top: auto; left: auto; display: inline-flex; align-items: center; gap: 8px; margin: 8px 14px 4px; padding: 8px 11px; font-size: 12px; font-weight: 700; }
+  .admin-sidebar { display: flex; position: fixed; z-index: 31; inset: 62px auto 0 0; width: min(300px, 88vw); height: auto; max-height: calc(100dvh - 62px); min-height: 0; transform: translateX(-105%); visibility: hidden; transition: transform .2s ease, visibility .2s ease; box-shadow: 8px 0 28px #24351d26; border: 1px solid var(--line); border-radius: 0 14px 14px 0; padding: 16px 15px; overflow-y: auto; }
+  .admin-sidebar.admin-sidebar-open { transform: translateX(0); visibility: visible; }
+  .admin-drawer-header { display: flex; align-items: center; justify-content: space-between; }
+  .admin-drawer-close { display: grid; }
+  .admin-drawer-backdrop { display: block; position: fixed; z-index: 29; inset: 62px 0 0; border: 0; background: #24351d66; cursor: pointer; }
+  .admin-topbar { padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .account-sidebar, .admin-sidebar { transition: none; }
+}
