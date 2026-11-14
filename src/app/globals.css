@@ -349,3 +349,18 @@ body:has(.home-hero) .site-header-search { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .account-sidebar { transition: none; }
 }
+
+/* Keep mobile navigation controls in reserved header space instead of over page content. */
+@media (max-width: 760px) {
+  .account-shell { position: relative; }
+  .account-menu-button { position: relative; top: auto; left: auto; margin: 0 0 10px; }
+  .account-main { padding-top: 0; }
+}
+@media (max-width: 600px) {
+  .admin-shell { position: relative; }
+  .admin-menu-button { position: absolute; top: 10px; left: 14px; }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .admin-shell { position: relative; }
+  .admin-menu-button { position: absolute; top: 10px; left: 14px; }
+}
