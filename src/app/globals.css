@@ -283,3 +283,33 @@ body:has(.home-hero) .site-header-search { display: none; }
 @media (max-width: 600px) {
   .home-hero-search .field { font-size: 16px; }
 }
+
+/* Seller area navigation keeps account tools out of the dashboard content. */
+.account-shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start; padding-top: 26px; }
+.account-sidebar { position: sticky; top: 88px; display: flex; flex-direction: column; gap: 18px; padding: 16px 12px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+.account-sidebar-heading { display: flex; align-items: center; gap: 10px; padding: 3px 5px 14px; border-bottom: 1px solid var(--line); }
+.account-sidebar-mark { width: 36px; height: 36px; flex: 0 0 36px; display: grid; place-items: center; border-radius: 10px; background: #eaf5e9; color: var(--green); }
+.account-sidebar-heading strong, .account-sidebar-heading span { display: block; }
+.account-sidebar-heading strong { font-size: 13px; }
+.account-sidebar-heading div > span { margin-top: 2px; color: var(--muted); font-size: 11px; }
+.account-sidebar-nav { display: grid; gap: 4px; }
+.account-sidebar-nav a { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 9px; color: var(--muted); font-size: 12px; }
+.account-sidebar-nav a:hover, .account-sidebar-nav a.active { background: #eaf5e9; color: var(--green); }
+.account-sidebar-nav a.active { font-weight: 700; }
+.account-sidebar-nav a span { min-width: 0; }
+.account-sidebar-trailing { margin-left: auto; }
+.account-sidebar-cta { min-height: 42px; font-size: 12px; }
+.account-main { min-width: 0; }
+.account-main > .container { width: 100%; max-width: none; margin: 0; padding-top: 8px !important; }
+.account-main .account-shell { padding-top: 0; }
+@media (max-width: 760px) {
+  .account-shell { grid-template-columns: minmax(0, 1fr); gap: 15px; padding-top: 14px; }
+  .account-sidebar { position: static; gap: 8px; padding: 10px; overflow: hidden; }
+  .account-sidebar-heading { display: none; }
+  .account-sidebar-nav { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
+  .account-sidebar-nav::-webkit-scrollbar { display: none; }
+  .account-sidebar-nav a { flex: 0 0 auto; padding: 9px 10px; }
+  .account-sidebar-nav a span { white-space: nowrap; }
+  .account-sidebar-trailing, .account-sidebar-cta { display: none; }
+  .account-main > .container { padding-top: 2px !important; }
+}
